@@ -249,11 +249,71 @@ Override via environment variables (pydantic-settings reads `.env`):
 ```bash
 uv run pytest tests/ -v
 ```
-Current suite: 4 passed, 1 skipped (embedding test skipped unless `GROQ_API_KEY` is exported to the shell).
+Current suite: 18 passed, 2 skipped (embedding + live LLM-judge tests skipped unless `GROQ_API_KEY` is exported to the shell).
 
 ---
 
-## 12. Running the complete system (`newssearch` command)
+## 12. Evaluation (LLM-as-Judge)
+
+The system ships with an offline **LLM-as-Judge** evaluation harness that scores
+each RAG answer on four dimensions and aggregates them into a report. Judges
+reuse the Groq reasoning LLM (`openai/gpt-oss-120b`), so no new API key is
+required.
+
+| Metric | What it measures | Weight |
+|--------|------------------|--------|
+| **Groundedness** (faithfulness) | Is every claim supported by the retrieved context? | 0.40 |
+| **Answer Relevance** | Does the answer address the user query? | 0.30 |
+| **Context Relevance** | Is the retrieved context useful for the query? | 0.20 |
+| **Citation Accuracy** | Are citations traceable to the retrieved sources? | 0.10 |
+
+Scores are 0-10, mapped to labels: *excellent* (9-10), *good* (7-8), *fair* (5-6), *poor* (0-4).
+The overall score is a weighted average; a run is considered passing when overall ≥ 7.0.
+
+### Run the evaluation
+
+```bash
+uv run newpapersearch evaluate            # run the default 8-case dataset
+uv run newpapersearch evaluate --limit 3  # only the first 3 cases
+uv run newpapersearch evaluate --output eval_report.json --csv eval_report.csv
+```
+
+Reports are printed to the console (per-metric averages + per-case table) and
+can be written as JSON / CSV for dashboards.
+
+### Architecture
+
+```
+src/newpapersearch/evaluation/
+├── metrics.py    # EvalCase, EvalResult, EvalReport, JudgeScore, MetricName
+├── judges.py     # BaseJudge + 4 LLM judges + LLMJudgePanel (fail-open)
+├── dataset.py    # Default 8-case news-search dataset
+├── runner.py     # EvaluationRunner: RAG inference -> judging -> report
+└── reporter.py   # Console table + JSON/CSV writers
+```
+
+Each judge answers exactly one question with a strict JSON prompt; parsing
+falls back to a regex score extraction, and any LLM error degrades to a neutral
+score (5.0) so a run never crashes. `EvaluationRunner` measures end-to-end
+latency per case and computes the weighted overall score.
+
+### Programmatic usage
+
+```python
+from newpapersearch.agents.graph import build_graph
+from newpapersearch.evaluation.dataset import load_default_cases
+from newpapersearch.evaluation.runner import EvaluationRunner
+
+graph = build_graph()
+runner = EvaluationRunner(graph=graph)
+report = runner.run()
+print("Average overall:", report.average_overall)
+print("Pass rate:", report.pass_rate)
+```
+
+---
+
+## 13. Running the complete system (`newssearch` command)
 
 A convenience CLI command `newssearch` is installed with the package to start,
 stop and restart the entire stack (FastAPI on port 8000 + Streamlit on port 8501).
@@ -304,7 +364,7 @@ Live screenshots of the running Streamlit frontend (`http://localhost:8501`).
 
 ---
 
-## 13. Summary
+## 14. Summary
 
 This is a complete, production-grade Agentic AI RAG system:
 - **Vector DB:** ChromaDB (persistent)
@@ -314,5 +374,6 @@ This is a complete, production-grade Agentic AI RAG system:
 - **API:** FastAPI + SQLite
 - **Frontend:** Streamlit (Google-like)
 - **Safety:** Dual input/output guardrail layer
+- **Evaluation:** LLM-as-Judge (groundedness, relevance, context, citations) with JSON/CSV reports
 - **Package manager:** uv
 
