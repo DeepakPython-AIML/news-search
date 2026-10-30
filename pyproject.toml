@@ -1,0 +1,20 @@
+[project]
+name = "newpapersearch"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Deepak Verma", email = "deepakverma7905640118@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "python-dotenv>=1.2.4",
+]
+
+[project.scripts]
+newpapersearch = "newpapersearch.cli:main"
+newssearch = "newpapersearch.manager:main"
+
+[build-system]
+requires = ["uv_build>=0.12.19,<0.13.0"]
+build-backend = "uv_build"

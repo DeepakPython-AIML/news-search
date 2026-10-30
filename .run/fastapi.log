@@ -1,0 +1,22 @@
+INFO:     Started server process [70656]
+INFO:     Waiting for application startup.
+W1030 11:15:29.733000 70656 .venv/lib/python3.14/site-packages/torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 9019.13it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 20898.53it/s]
+INFO:     127.0.0.1:62493 - "GET /health HTTP/1.1" 200 OK
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 20200.55it/s]
+INFO:     127.0.0.1:62541 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62546 - "POST /query/query HTTP/1.1" 200 OK
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 23174.88it/s]
+INFO:     127.0.0.1:62726 - "GET /health HTTP/1.1" 200 OK
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 17290.55it/s]
+INFO:     127.0.0.1:62739 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62744 - "POST /query/query HTTP/1.1" 200 OK
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 13128.23it/s]
+INFO:     127.0.0.1:62761 - "GET /health HTTP/1.1" 200 OK
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 18222.97it/s]
+INFO:     127.0.0.1:62770 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62773 - "POST /query/query HTTP/1.1" 200 OK

@@ -1,0 +1,49 @@
+# Agentic AI RAG System - Production Grade
+# Managed with uv
+
+# Environment & configuration
+python-dotenv>=1.0.0
+pydantic>=2.7.0
+pydantic-settings>=2.3.0
+
+# Core LLM / Agent frameworks
+langchain>=0.3.0
+langchain-core>=0.3.0
+langchain-community>=0.3.0
+langchain-huggingface>=0.1.0
+langchain-groq>=0.1.0
+langgraph>=0.4.0
+
+# Vector database
+chromadb>=0.5.0
+langchain-chroma>=0.1.0
+
+# Text splitting
+langchain-text-splitters>=0.3.0
+
+# Embeddings (sentence-transformers - Groq does not offer an embedding API)
+sentence-transformers>=2.5.0
+
+# PDF parsing
+pypdf>=4.1.0
+fonttools>=4.53.0
+
+# API
+fastapi>=0.111.0
+uvicorn[standard]>=0.30.0
+python-multipart>=0.0.6
+httpx>=0.27.0
+
+# Database
+sqlalchemy>=2.0.29
+
+# Frontend
+streamlit>=1.35.0
+
+# Utilities
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+
+# Testing
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
